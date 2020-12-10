@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace BulkyBook
 {
@@ -51,6 +52,12 @@ namespace BulkyBook
                 options.ClientId = "713585930523-bu9o2m5pl88ts2l21jlm2ea9fm87itlq.apps.googleusercontent.com";
                 options.ClientSecret = "JFo_x2-AGN8nqRhJq3BxkWtk";
             });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +78,7 @@ namespace BulkyBook
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();
